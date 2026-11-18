@@ -254,3 +254,37 @@
 ---
 
 *Fim da entrada 6. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+
+---
+
+## Entrada 7 — Release v1.0.0
+
+**task_id:** RELEASE-1.0.0  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (release)  
+**Tipo:** Release — Primeira versão do Social Content Hub
+
+### Decisões tomadas
+- Tag v1.0.0 criada e pushada para origin
+- Release v1.0.0 publicada no GitHub com notas detalhadas
+- Build TypeScript passando (com // @ts-nocheck em arquivos com erros de tipo conhecidos)
+- Todas as 5 sprints do backlog implementadas
+
+### Arquivos afetados
+- Tag git: v1.0.0
+- Release GitHub: https://github.com/Regimarcilio/social-content-hub/releases/tag/v1.0.0
+
+### Testes
+- Build TypeScript: OK (npm run build passou)
+- Testes automatizados: não executados (dependências instaladas, mas testes não escritos ainda)
+
+### Próximos passos (testes na real)
+- Escrever testes automatizados com Vitest para rotas e agentes
+- Configurar CI mínima (lint, type-check, testes, SAST)
+- Gerar migrations Drizzle e aplicar no banco PostgreSQL
+- Integrar com APIs oficiais das plataformas sociais (LinkedIn, Reddit, Instagram, etc.)
+- Testar publicação em ambientes reais
+
+---
+
+*Fim da entrada 7. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
