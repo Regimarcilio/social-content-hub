@@ -24,7 +24,8 @@
     "hono": "^4.6.0",
     "magic-string": "^0.30.10",
     "openai": "^4.60.0",
-    "pg": "^8.11.0",
+    "pg": "^8.23.1",
+    "pg-types": "^4.1.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {

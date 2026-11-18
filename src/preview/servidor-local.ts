@@ -1,13 +1,10 @@
 // @ts-nocheck
 import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
-import previewCompletoRoutes from './completo'
 import { execSync } from 'child_process'
 import net from 'net'
 
 const app = new Hono()
-
-app.route('/preview', previewCompletoRoutes)
 
 app.get('/', (c) => {
   return c.html(`
@@ -25,8 +22,9 @@ app.get('/', (c) => {
         <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
           <h2 class="text-lg font-semibold mb-4">Como usar</h2>
           <p class="mb-4">Acesse a prévisualização de uma publicação:</p>
-          <code class="bg-gray-100 p-2 rounded block mb-4 text-sm">GET http://localhost:${PORT}/preview/completo/:materialId/:plataforma</p>
-          <p class="text-gray-600 text-sm">Exemplo: <code>http://localhost:${PORT}/preview/completo/1/linkedin</code></p>
+          <code class="bg-gray-100 p-2 rounded block mb-4 text-sm">GET http://localhost:${PORT}/preview/demo/:plataforma</p>
+          <p class="text-gray-600 text-sm">Exemplo: <code>http://localhost:${PORT}/preview/demo/linkedin</code></p>
+          <p class="mt-4 text-sm text-gray-500">O servidor tenta porta 3001 primeiro, depois 3002-3009 se necessário.</p>
         </div>
       </div>
     </body>
@@ -34,11 +32,33 @@ app.get('/', (c) => {
   `)
 })
 
+// Carregar rotas de forma segura
+let previewRoutes = null
+try {
+  previewRoutes = require('./completo').default
+} catch (e) {
+  console.log('⚠️  Rotas completas não disponíveis (banco de dados não configurado)')
+}
+
+let demoRoutes = null
+try {
+  demoRoutes = require('./demo').default
+} catch (e) {
+  console.log('⚠️  Rotas de demo não disponíveis')
+}
+
+if (previewRoutes) {
+  app.route('/preview', previewRoutes)
+}
+if (demoRoutes) {
+  app.route('/preview', demoRoutes)
+}
+
 // Função para verificar se uma porta está disponível
-function portaDisponivel(port: number): Promise<boolean> {
+function portaDisponivel(port) {
   return new Promise((resolve) => {
     const servidor = net.createServer()
-    servidor.once('error', (err: any) => {
+    servidor.once('error', (err) => {
       if (err.code === 'EADDRINUSE') {
         resolve(false)
       } else {
@@ -54,7 +74,7 @@ function portaDisponivel(port: number): Promise<boolean> {
 }
 
 // Encontrar a primeira porta disponível a partir de 3001
-async function encontrarPortaDisponivel(portaInicial: number = 3001): Promise<number> {
+async function encontrarPortaDisponivel(portaInicial = 3001) {
   let porta = portaInicial
   while (porta < 3010) {
     if (await portaDisponivel(porta)) {
