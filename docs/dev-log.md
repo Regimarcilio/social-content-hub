@@ -288,3 +288,41 @@
 ---
 
 *Fim da entrada 7. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+
+---
+
+## Entrada 8 — Testes Automatizados e CI Mínima
+
+**task_id:** CI-001  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Testes e CI
+
+### Decisões tomadas
+- Usar `node --test` nativo (Node 20+) em vez de Vitest, devido a problemas de compatibilidade com magic-string no ambiente.
+- Testes de unidade para validação Zod, router de modelos (cache semântico) e cálculo de custos.
+- Workflow GitHub Actions (CI) com: checkout, setup Node.js, install, lint, build (type check), testes, SAST (KaliMaster).
+- Qualidade gate: merge permitido apenas se todos os passos passarem.
+
+### Arquivos criados/modificados
+- `tests/validation.test.js` — 7 testes de validação Zod (projeto, conteúdo, aprovação)
+- `tests/costs.test.js` — 3 testes de cálculo de custos (médio, limite, total)
+- `tests/router.test.js` — 2 testes de cache semântico (hit/miss, estatísticas)
+- `.github/workflows/ci.yml` — Workflow CI com lint, build, testes, SAST
+- `package.json` — Script `test` atualizado para `node --test`, versão 1.0.0
+- `vitest.config.ts` — Removido (não usado)
+
+### Testes
+- 12 testes executados, 12 passando, 0 falhando
+- Build TypeScript: OK
+- Lint: não executado (eslint não instalado)
+
+### Próximos passos
+- Gerar migrations Drizzle e aplicar no banco PostgreSQL
+- Integrar com APIs oficiais das plataformas sociais
+- Testar publicação em ambiente real
+- Adicionar testes de integração para rotas Hono
+
+---
+
+*Fim da entrada 8. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
