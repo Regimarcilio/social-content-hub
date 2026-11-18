@@ -49,4 +49,37 @@
 
 ---
 
-*Fim da entrada 1. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+## Entrada 2 — Sprint 1: Memória Editorial
+
+**task_id:** SPRINT-1-001  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Sprint 1 (memória editorial)
+
+### Decisões tomadas
+- Stack: Node.js/TypeScript com Hono, Drizzle ORM, PostgreSQL, Zod (validação).
+- Validação Zod feita diretamente nas rotas (sem middleware `@hono/zod-validator`, não disponível offline).
+- Middleware simples de validação para body JSON e query params implementado inline.
+- Branch de trabalho: `develop` (commit direto permitido para setup inicial; features futuras usarão `feature/*`).
+
+### Arquivos criados/modificados
+- `src/shared/db.ts` — Conexão Drizzle com PostgreSQL via pool `pg`.
+- `src/editorial/schema.ts` — Schemas: `projetosEditoriais`, `plataformas`, `materiais` + enum `estado_publicacao`.
+- `src/editorial/validation.ts` — Schemas Zod: criar, atualizar, listar projetos editoriais.
+- `src/editorial/routes.ts` — Rotas Hono: GET/POST/PATCH/DELETE `/api/editorial`, GET `/api/editorial/plataformas`, GET `/api/editorial/:id/materiais`.
+- `src/routes.ts` — Agregador de rotas (`/api` → editorial).
+- `src/index.ts` — Montagem das rotas `/api`, atualização de status para `sprint_1_memoria_editorial`.
+
+### Testes
+- Nenhum teste de código executado (dependências não instaladas offline).
+- Build TypeScript não executado (sem `node_modules`).
+
+### Próximos passos
+- Instalar dependências (`npm install`) quando houver rede.
+- Executar `npm run build` para verificar compilação TypeScript.
+- Criar migrations Drizzle (`drizzle-kit generate`) e aplicar no banco.
+- Implementar US-002 (identidade editorial) e US-003 (toggle de plataformas) se ainda não cobertos.
+
+---
+
+*Fim da entrada 2. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
