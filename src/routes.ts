@@ -7,6 +7,7 @@ import memoryRoutes from './memory/routes'
 import costsRoutes from './costs/routes'
 import platformsRoutes from './platforms/routes'
 import previewRoutes from './preview/completo'
+import demoRoutes from './preview/demo'
 
 const app = new Hono()
 
@@ -18,5 +19,6 @@ app.route('/memory', memoryRoutes)
 app.route('/costs', costsRoutes)
 app.route('/platforms', platformsRoutes)
 app.route('/preview', previewRoutes)
+app.route('/preview', demoRoutes)
 
 export default app
