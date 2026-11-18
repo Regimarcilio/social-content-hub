@@ -120,4 +120,46 @@
 
 ---
 
-*Fim da entrada 3. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+## Entrada 4 — Sprint 3: Redação, Adaptação e Imagens
+
+**task_id:** SPRINT-3-001  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Sprint 3 (redação, adaptação e imagens)
+
+### Decisões tomadas
+- Agente Writer: usa modelo Gemma 4 31B (redação PT-BR, multilíngue) via OpenRouter.
+- Agente Platform Adapter: usa modelo Nemotron 3.5 Lightning (adaptação leve, alto throughput) via OpenRouter.
+- Agente Art Director: usa modelo Nemotron 3.5 Super VL (visão, contexto 1M) via OpenRouter.
+- Agente Image Creator: usa ComfyUI local (FLUX.1 [schnell] / FLUX.2 [klein] 4B) com fallback para placeholder quando não disponível.
+- Geração de imagem em duas etapas: conceito (avaliação obrigatória) → definitiva. Não gera múltiplas imagens sem critério de avaliação.
+- Regras próprias por plataforma definidas (LinkedIn 3000 chars, X 280 chars, Instagram 2200 chars, etc.).
+- Validação Zod inline nas rotas (sem middleware externo não disponível offline).
+
+### Arquivos criados/modificados
+- `src/agents/writer.ts` — Agente Writer: `gerarConteudoOriginal()`.
+- `src/agents/platform-adapter.ts` — Agente Platform Adapter: `adaptarConteudoParaPlataformas()`, regras por plataforma.
+- `src/agents/art-director.ts` — Agente Art Director: `criarBriefingImagem()`.
+- `src/agents/image-creator.ts` — Agente Image Creator: `gerarImagemDuasEtapas()`, `avaliarConceito()`, `selecionarConceito()`, integração ComfyUI.
+- `src/images/schema.ts` — Tabelas: `conteudosGerados`, `adaptacoesPlataforma`, `briefingsImagem`, `imagensGeradas`.
+- `src/images/validation.ts` — Schemas Zod: gerar conteúdo, adaptar, criar briefing, gerar imagem.
+- `src/images/routes.ts` — Rotas Hono: conteúdos, adaptações, briefings, imagens (duas etapas, avaliação, seleção).
+- `src/images/index.ts` — Re-export de schemas.
+- `src/routes.ts` — Agregador de rotas (`/api` → editorial + research + images).
+- `src/shared/db.ts` — Inclui schemas de images no Drizzle.
+- `src/index.ts` — Atualização de etapa para `sprint_3_redacao_adaptacao_imagens`.
+- `src/routes-images.ts` — Agregador alternativo de rotas.
+
+### Testes
+- Nenhum teste de código executado (dependências não instaladas offline).
+- Build TypeScript não executado (sem `node_modules`).
+
+### Próximos passos
+- Instalar dependências (`npm install`) quando houver rede.
+- Executar `npm run build` para verificar compilação TypeScript.
+- Criar migrations Drizzle (`drizzle-kit generate`) e aplicar no banco.
+- Implementar US-011 (Quality Reviewer) e US-012 (SEO Specialist) na Sprint 4.
+
+---
+
+*Fim da entrada 4. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
