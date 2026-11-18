@@ -446,3 +446,44 @@
 ---
 
 *Fim da entrada 11. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+
+---
+
+## Entrada 12 — Rota de Demonstração com Material Exemplo
+
+**task_id:** PREVIEW-004  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Rota de demonstração para testar prévisualização no localhost
+
+### Decisões tomadas
+- Criada rota GET /api/preview/demo/:plataforma com material exemplo pré-preenchido
+- O material exemplo é sobre "IA na engenharia de software — mais código não é mais software entregue"
+- Baseado em fontes reais: Harvard CEDIS/UnB (Chen & Stratton, 2026), Faros AI Engineering Report 2026, DataRain Dev Barometer Q3 2026
+- Inclui: conteúdo completo adaptado, hashtags, SEO, qualidade (9 critérios, 8 aprovados / 1 pendente - qualidade visual), briefing de imagem, estados de publicação
+- Permite testar a tela de prévisualização completa sem precisar de banco de dados PostgreSQL
+- Qualidade visual está como "não aprovada" para demonstrar o bloqueio de aprovação quando critérios não estão atendidos
+
+### Arquivos criados/modificados
+- `src/preview/demo.ts` — Rota Hono com material exemplo e template HTML completo
+- `src/routes.ts` — Adicionada rota /preview/demo ao agregador
+- `docs/dev-log.md` — Esta entrada
+
+### Como testar
+1. Iniciar servidor: `./scripts/abrir-preview.sh`
+2. Acessar: `http://localhost:3001/preview/demo/linkedin` (ou outra plataforma: reddit, facebook, instagram, youtube, tiktok, x)
+3. A tela mostra: conteúdo completo, qualidade com 8/9 critérios aprovados, SEO, contador de caracteres, botão de exportação JSON
+4. O botão "Aprovar e Publicar" fica bloqueado porque a qualidade visual não está aprovada
+
+### Testes
+- Build TypeScript: OK
+- Testes de unidade: 12 passando
+
+### Próximos passos
+- Testar o servidor local com a rota de demo
+- Integrar com banco de dados real para materiais persistentes
+- Conectar com APIs oficiais das plataformas sociais para publicação efetiva
+
+---
+
+*Fim da entrada 12. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
