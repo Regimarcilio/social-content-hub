@@ -366,3 +366,48 @@
 ---
 
 *Fim da entrada 9. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+
+---
+
+## Entrada 10 — Prévisualização Completa no Localhost
+
+**task_id:** PREVIEW-002  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Prévisualização completa no localhost antes de publicar na rede social
+
+### Decisões tomadas
+- Criada rota GET /api/preview/completo/:materialId/:plataforma que agrega TODOS os elementos da publicação (conteúdo, adaptação, imagem, qualidade, SEO, estado de publicação) em uma única tela HTML/Tailwind
+- Servidor local dedicado na porta 3001 que abre o navegador automaticamente ao iniciar
+- Script scripts/abrir-preview.sh para iniciar o servidor com build automático
+- A tela mostra: estado da publicação, qualidade (critérios individuais), SEO, conteúdo editável, imagem gerada, contador de caracteres em tempo real, e botões de ação (salvar, exportar, aprovar)
+- Integração com o fluxo de aprovação humana: só permite aprovar se todos os critérios de qualidade estiverem atendidos
+- Exportação para publicação manual em JSON
+
+### Arquivos criados/modificados
+- `src/preview/completo.ts` — Rota Hono com agregação completa de dados e template HTML embutido
+- `src/preview/servidor-local.ts` — Servidor local na porta 3001 com abertura automática de navegador
+- `scripts/abrir-preview.sh` — Script shell para iniciar o servidor com build
+- `src/routes.ts` — Adicionada rota /preview ao agregador principal
+- `src/index.ts` — Etapa atualizada para 'preview_completo_localhost'
+- `docs/dev-log.md` — Esta entrada
+
+### Fluxo de uso
+1. Cadastrar projeto editorial → gerar conteúdo → adaptar para plataforma → criar briefing → gerar imagem → revisar qualidade → definir SEO → aprovar (humano)
+2. Acessar: http://localhost:3001/preview/completo/:materialId/:plataforma
+3. Revisar a prévisualização completa com todos os elementos
+4. Aprovar ou exportar para publicação manual
+
+### Testes
+- Build TypeScript: OK
+- Testes de unidade: 12 passando
+- Teste manual: acessar GET /api/preview/completo/1/linkedin no servidor local
+
+### Próximos passos
+- Testar na real com dados de um material cadastrado no banco
+- Integrar com APIs oficiais das plataformas sociais para publicação efetiva após aprovação
+- Gerar migrations Drizzle e aplicar no banco PostgreSQL
+
+---
+
+*Fim da entrada 10. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
