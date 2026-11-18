@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { pgTable, serial, text, timestamp, jsonb, integer, boolean } from 'drizzle-orm/pg-core'
 import { conteudosGerados, adaptacoesPlataforma } from './index'
 

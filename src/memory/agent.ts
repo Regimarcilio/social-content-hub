@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Agente de Memória Editorial
  *

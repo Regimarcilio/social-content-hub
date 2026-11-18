@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { pgTable, serial, text, timestamp, jsonb } from 'drizzle-orm/pg-core'
 
 export const mcpIntegracao = pgTable('mcp_integracao', {

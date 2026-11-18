@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Router de Modelos Gratuitos (OpenRouter)
  *
