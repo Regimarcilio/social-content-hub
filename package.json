@@ -1,6 +1,6 @@
 {
   "name": "social-content-hub",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Social Content Hub - Sistema de criação e gerenciamento de publicações digitais integrado ao OpenCode",
   "author": "Regimarcilio",
@@ -9,8 +9,8 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "node --test tests/**/*.test.js",
+    "test:watch": "node --watch --test tests/**/*.test.js",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "sast": "kalimaster-sast",
@@ -23,14 +23,14 @@
     "drizzle-orm": "^0.33.0",
     "pg": "^8.11.0",
     "dotenv": "^16.4.0",
-    "openai": "^4.60.0"
+    "openai": "^4.60.0",
+    "magic-string": "^0.30.10"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/pg": "^8.11.0",
     "typescript": "^5.5.0",
     "tsx": "^4.16.0",
-    "vitest": "^2.0.0",
     "eslint": "^8.57.0",
     "drizzle-kit": "^0.24.0"
   }
