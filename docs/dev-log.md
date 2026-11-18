@@ -82,4 +82,42 @@
 
 ---
 
-*Fim da entrada 2. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+## Entrada 3 — Sprint 2: Pesquisa e Estratégia
+
+**task_id:** SPRINT-2-001  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Sprint 2 (pesquisa e estratégia)
+
+### Decisões tomadas
+- Agente Researcher: usa modelo Nemotron 3.5 Super VL (visão + pesquisa, contexto 1M) via OpenRouter.
+- Agente Strategist: usa modelo Nemotron 3 Ultra (raciocínio/orquestração, contexto 1M) via OpenRouter.
+- Router de modelos (`src/ai/router.ts`) com cache semântico em memória (TTL 1h) para evitar chamadas desnecessárias.
+- Busca de fontes via fetch nativo (placeholder); em produção substituir por MCP de pesquisa (Tavily/Exa/Perplexity).
+- Parsing simples de resposta do modelo para extrair campos da estratégia; em produção usar saída estruturada/Zod.
+
+### Arquivos criados/modificados
+- `src/ai/router.ts` — Router de modelos OpenRouter com cache semântico, registro de custo/latência, modelos por agente.
+- `src/agents/researcher.ts` — Agente Researcher: `pesquisarAssunto()`, `obterPesquisa()`.
+- `src/agents/strategist.ts` — Agente Strategist: `definirEstrategiaEditorial()`, extração de campos.
+- `src/research/schema.ts` — Tabelas: `pesquisas`, `estrategias`.
+- `src/research/validation.ts` — Schemas Zod: criar pesquisa, criar estratégia.
+- `src/research/routes.ts` — Rotas Hono: POST/GET pesquisas, POST/GET estratégias, GET pesquisas por projeto.
+- `src/routes.ts` — Agregador de rotas (`/api` → editorial + research).
+- `src/shared/db.ts` — Inclui schemas de research no Drizzle.
+- `src/index.ts` — Atualização de etapa para `sprint_2_pesquisa_estrategia`.
+- `src/routes-research.ts` e `src/routes-sprint2.ts` — Agregadores alternativos de rotas.
+
+### Testes
+- Nenhum teste de código executado (dependências não instaladas offline).
+- Build TypeScript não executado (sem `node_modules`).
+
+### Próximos passos
+- Instalar dependências (`npm install`) quando houver rede.
+- Executar `npm run build` para verificar compilação TypeScript.
+- Criar migrations Drizzle (`drizzle-kit generate`) e aplicar no banco.
+- Implementar US-007 (Writer) e US-008 (Platform Adapter) na Sprint 3.
+
+---
+
+*Fim da entrada 3. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
