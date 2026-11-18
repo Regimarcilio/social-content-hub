@@ -6,7 +6,7 @@ import qualityRoutes from './quality/routes'
 import memoryRoutes from './memory/routes'
 import costsRoutes from './costs/routes'
 import platformsRoutes from './platforms/routes'
-import previewRoutes from './preview/routes'
+import previewRoutes from './preview/completo'
 
 const app = new Hono()
 
