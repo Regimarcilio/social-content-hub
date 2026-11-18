@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prévisualização - Social Content Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .preview-card { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .platform-badge { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .char-counter { font-size: 0.875rem; color: #6b7280; }
+    .char-limit-warning { color: #dc2626; font-weight: 600; }
+    .char-limit-ok { color: #059669; font-weight: 600; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex">
+          <div class="flex-shrink-0 flex items-center">
+            <img class="block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow">
+          </div>
+          <div class="ml-10 flex items-baseline space-xs-4">
+            <a href="#" class="text-gray-900 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Social Content Hub</a>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <button type="button" class="bg-white text-gray-700 inline-flex items-center border border-gray-300 shadow-sm px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3">
+            Voltar para Revisão
+          </button>
+          <button type="button" id="btnAprovar" class="text-white bg-indigo-600 border border-transparent shadow-sm px-5 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3">
+            ✅ Aprovar Publicação
+          </button>
+          <button type="button" id="btnRejeitar" class="text-white bg-red-600 border border-transparent shadow-sm px-5 py-2 rounded-md text-sm font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+            ❌ Rejeitar e Revisar
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    
+    <!-- Informações do Material -->
+    <div class="mb-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-medium text-gray-900">Prévisualização de Publicação</h2>
+          <p class="mt-1 text-sm text-gray-500">Revise o conteúdo antes de publicar na plataforma selecionada</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span id="badgePlataforma" class="platform-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-5 bg-indigo-100 text-indigo-800">
+            linkedin
+          </span>
+          <span id="badgeEstado" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium leading-5 bg-gray-100 text-gray-800">
+            Rascunho
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview da Publicação -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Coluna Esquerda: Preview Visual -->
+      <div class="lg:col-span-1">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
+          <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg font-medium text-gray-900">Como ficará na plataforma</h3>
+            <p class="mt-1 text-sm text-gray-500">Prévisualização simulada - confira formatação, tamanho e imagem</p>
+          </div>
+          <div class="border-t border-gray-200">
+            <!-- Card de Preview da Plataforma -->
+            <div class="p-6 preview-card bg-white rounded-b-lg" id="previewContainer">
+              <div class="flex items-center space-x-3 mb-3">
+                <div class="flex-shrink-0">
+                  <img class="h-8 w-8 rounded-full" id="previewAvatar" src="https://ui-avatars.com/api/?name=Social+Content&background=4f46e5&color=fff" alt="Avatar">
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-900" id="previewNome">Social Content Hub</p>
+                  <p class="text-xs text-gray-500" id="previewPlataforma">linkedin · há momentos</p>
+                </div>
+              </div>
+              <div class="mt-4" id="previewConteudo">
+                <!-- Conteúdo será injetado aqui via JS -->
+              </div>
+              <div class="mt-4" id="previewImagemContainer" class="hidden">
+                <img id="previewImagem" class="w-full h-64 object-cover rounded-lg border border-gray-200" alt="Imagem da publicação">
+              </div>
+              <div class="mt-3 flex items-center text-xs text-gray-500" id="previewHashtags">
+                <!-- Hashtags serão injetadas aqui -->
+              </div>
+              <div class="mt-2 flex items-center text-xs text-gray-500" id="previewContador">
+                <!-- Contador de caracteres -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna Direita: Edição e Ação -->
+      <div class="lg:col-span-1">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
+          <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg font-medium text-gray-900">Editar Conteúdo</h3>
+            <p class="mt-1 text-sm text-gray-500">Faça ajustes finais antes de aprovar</p>
+          </div>
+          <div class="border-t border-gray-200 p-6">
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Título</label>
+              <input type="text" id="inputTitulo" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Título da publicação">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Conteúdo</label>
+              <textarea id="inputConteudo" rows="6" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Hashtags (separadas por vírgula)</label>
+              <input type="text" id="inputHashtags" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="#exemplo #marketing">
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Imagem (URL ou caminho)</label>
+              <input type="text" id="inputImagem" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="https://exemplo.com/imagem.jpg">
+            </div>
+            
+            <!-- Contador de caracteres -->
+            <div class="flex justify-end">
+              <span id="contadorCaracteres" class="char-counter char-limit-ok">0 / 3000 caracteres</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ações Rápidas -->
+        <div class="mt-6 bg-white p-6 border border-gray-200 rounded-lg shadow-sm">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Ações</h3>
+          <div class="space-y-3">
+            <button type="button" id="btnSalvarRascunho" class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              💾 Salvar como Rascunho
+            </button>
+            <button type="button" id="btnExportar" class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              📤 Exportar para Publicação Manual
+            </button>
+            <div class="border-t border-gray-200 pt-4">
+              <button type="button" id="btnConfirmarAprovar" class="w-full flex items-center justify-center px-4 py-2 text-white bg-indigo-600 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                ✅ Confirmar Aprovação e Publicar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal de Confirmação -->
+  <div id="modalConfirmacao" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-center items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md">
+          <div class="sm:flex sm:items-start sm:px-6">
+            <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-indigo-100 sm:mx-0 sm:h-10 sm:w-10">
+              <svg class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div class="mt-3 text-center sm:ml-4 sm:text-left">
+              <h3 class="text-base font-medium leading-6 text-gray-900" id="modalTitulo">Confirmar Aprovação</h3>
+              <div class="mt-2">
+                <p class="text-sm text-gray-500" id="modalMensagem">Tem certeza que deseja aprovar esta publicação? Após aprovada, ela será enviada para a plataforma selecionada.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-5 sm:items-start sm:justify-center sm:px-6">
+            <button type="button" id="btnCancelarAprovacao" class="ml-3 inline-flex w-full justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">Cancelar</button>
+            <button type="button" id="btnConfirmarSim" class="inline-flex w-full justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">Sim, Aprovar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dados da prévisualização (serão preenchidos pelo servidor)
+    const dadosPreview = __DADOS_PREVIEW__;
+
+    // Elementos DOM
+    const previewConteudo = document.getElementById('previewConteudo');
+    const previewImagemContainer = document.getElementById('previewImagemContainer');
+    const previewImagem = document.getElementById('previewImagem');
+    const previewHashtags = document.getElementById('previewHashtags');
+    const previewContador = document.getElementById('previewContador');
+    const inputTitulo = document.getElementById('inputTitulo');
+    const inputConteudo = document.getElementById('inputConteudo');
+    const inputHashtags = document.getElementById('inputHashtags');
+    const inputImagem = document.getElementById('inputImagem');
+    const contadorCaracteres = document.getElementById('contadorCaracteres');
+    const badgePlataforma = document.getElementById('badgePlataforma');
+    const badgeEstado = document.getElementById('badgeEstado');
+    const previewNome = document.getElementById('previewNome');
+    const previewPlataforma = document.getElementById('previewPlataforma');
+
+    // Limites por plataforma
+    const LIMITES = {
+      linkedin: 3000,
+      reddit: 40000,
+      facebook: 63206,
+      instagram: 2200,
+      youtube: 5000,
+      tiktok: 2200,
+      x: 280
+    };
+
+    // Inicializar
+    function inicializar() {
+      if (!dadosPreview) return;
+
+      // Preencher badges
+      badgePlataforma.textContent = dadosPreview.plataforma;
+      badgeEstado.textContent = dadosPreview.estado;
+      previewNome.textContent = 'Social Content Hub';
+      previewPlataforma.textContent = dadosPreview.plataforma + ' · Prévisualização';
+
+      // Preencher inputs
+      inputTitulo.value = dadosPreview.titulo || '';
+      inputConteudo.value = dadosPreview.conteudoAdaptado || dadosPreview.conteudoOriginal || '';
+      inputHashtags.value = (dadosPreview.hashtags || []).join(', ');
+      inputImagem.value = dadosPreview.caminhoImagem || '';
+
+      // Atualizar preview
+      atualizarPreview();
+
+      // Listeners
+      inputTitulo.addEventListener('input', atualizarPreview);
+      inputConteudo.addEventListener('input', atualizarPreview);
+      inputHashtags.addEventListener('input', atualizarPreview);
+      inputImagem.addEventListener('input', atualizarImagemPreview);
+
+      // Contador inicial
+      atualizarContador();
+
+      // Ações
+      document.getElementById('btnAprovar').addEventListener('click', () => abrirModalConfirmacao());
+      document.getElementById('btnRejeitar').addEventListener('click', () => {
+        if(confirm('Rejeitar esta publicação? Ela retornará para revisão.')) {
+          alert('Publicação rejeitada. Retornando para revisão...');
+          window.location.href = '/api/editorial';
+        }
+      });
+      document.getElementById('btnConfirmarAprovar').addEventListener('click', () => abrirModalConfirmacao());
+      document.getElementById('btnConfirmarSim').addEventListener('click', confirmarAprovacao);
+      document.getElementById('btnCancelarAprovacao').addEventListener('click', fecharModalConfirmacao);
+      document.getElementById('btnSalvarRascunho').addEventListener('click', salvarRascunho);
+      document.getElementById('btnExportar').addEventListener('click', exportarManual);
+    }
+
+    function atualizarPreview() {
+      const conteudo = inputConteudo.value;
+      const hashtags = inputHashtags.value.split(',').map(h => h.trim()).filter(h => h).map(h => '#' + h).join(' ');
+      const textoCompleto = conteudo + (hashtags ? '\n\n' + hashtags : '');
+
+      previewConteudo.innerHTML = textoCompleto.replace(/\n/g, '<br>');
+      previewHashtags.innerHTML = hashtags ? '<span class="text-indigo-600">' + hashtags + '</span>' : '';
+      atualizarContador();
+    }
+
+    function atualizarImagemPreview() {
+      const url = inputImagem.value;
+      if (url) {
+        previewImagem.src = url;
+        previewImagemContainer.classList.remove('hidden');
+      } else {
+        previewImagemContainer.classList.add('hidden');
+      }
+    }
+
+    function atualizarContador() {
+      const texto = inputConteudo.value;
+      const limite = LIMITES[dadosPreview.plataforma] || 3000;
+      const restante = limite - texto.length;
+      contadorCaracteres.textContent = texto.length + ' / ' + limite + ' caracteres';
+      contadorCaracteres.className = restante < 0 ? 'char-counter char-limit-warning' : 'char-counter char-limit-ok';
+    }
+
+    function abrirModalConfirmacao() {
+      document.getElementById('modalConfirmacao').classList.remove('hidden');
+    }
+
+    function fecharModalConfirmacao() {
+      document.getElementById('modalConfirmacao').classList.add('hidden');
+    }
+
+    async function confirmarAprovacao() {
+      const btn = document.getElementById('btnConfirmarSim');
+      btn.textContent = 'Processando...';
+      btn.disabled = true;
+
+      try {
+        const resposta = await fetch('/api/quality/aprovar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            materialId: dadosPreview.materialId,
+            plataforma: dadosPreview.plataforma,
+            aprovadoPor: 'usuario_preview',
+            estado: 'aprovado'
+          })
+        });
+
+        if (resposta.ok) {
+          fecharModalConfirmacao();
+          alert('✅ Publicação aprovada com sucesso!');
+          window.location.href = '/api/editorial';
+        } else {
+          const erro = await resposta.json();
+          alert('Erro ao aprovar: ' (erro.error || 'Erro desconhecido'));
+          btn.textContent = 'Sim, Aprovar';
+          btn.disabled = false;
+        }
+      } catch (e) {
+        alert('Erro de conexão: ' + e.message);
+        btn.textContent = 'Sim, Aprovar';
+        btn.disabled = false;
+      }
+    }
+
+    async function salvarRascunho() {
+      alert('Rascunho salvo (simulado). Em produção, isso atualizaria o banco de dados.');
+    }
+
+    async function exportarManual() {
+      const resposta = await fetch('/api/quality/exportar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          materialId: dadosPreview.materialId,
+          plataforma: dadosPreview.plataforma,
+          formato: 'json',
+          exportadoPor: 'usuario_preview'
+        })
+      });
+
+      if (resposta.ok) {
+        const dados = await resposta.json();
+        const blob = new Blob([JSON.stringify(dados.conteudo, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'publicacao_' + dadosPreview.plataforma + '_' + dadosPreview.materialId + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        alert('✅ Material exportado para publicação manual!');
+      } else {
+        alert('Erro ao exportar.');
+      }
+    }
+
+    // Inicializar quando o DOM estiver pronto
+    document.addEventListener('DOMContentLoaded', inicializar);
+  </script>
+</body>
+</html>
