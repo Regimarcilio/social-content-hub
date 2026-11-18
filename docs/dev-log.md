@@ -487,3 +487,36 @@
 ---
 
 *Fim da entrada 12. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+
+---
+
+## Entrada 13 — Correção do Servidor Localhost (Dependência do Banco de Dados)
+
+**task_id:** PREVIEW-005  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Correção — Servidor localhost carrega rotas de forma segura sem dependência obrigatória do banco de dados
+
+### Decisões tomadas
+- O servidor de preview agora carrega as rotas de forma segura com try/catch
+- Se o banco de dados não estiver disponível (módulo `pg` com erro), as rotas completas são ignoradas e apenas a rota de demo funciona
+- A rota de demo (`/preview/demo/:plataforma`) não depende do banco de dados e funciona independentemente
+- O servidor continua verificando porta disponível (3001-3009) e abrindo o navegador automaticamente
+
+### Arquivos modificados
+- `src/preview/servidor-local.ts` — Carregamento condicional de rotas com try/catch, mensagem informativa quando banco não está disponível
+- `docs/dev-log.md` — Esta entrada
+
+### Como testar
+1. `./scripts/abrir-preview.sh`
+2. Acessar: `http://localhost:3004/preview/demo/linkedin` (porta pode variar)
+3. A rota de demo funciona sem banco de dados
+
+### Testes
+- Build TypeScript: OK
+- Servidor inicia na porta 3004 (3001-3003 em uso)
+- Rota de demo disponível sem dependência do banco
+
+---
+
+*Fim da entrada 13. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
