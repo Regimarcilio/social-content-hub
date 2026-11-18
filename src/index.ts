@@ -22,7 +22,7 @@ app.get('/', (c) => {
     name: 'Social Content Hub',
     description: 'Sistema de criação e gerenciamento de publicações digitais integrado ao OpenCode',
     status: 'implementacao_em_andamento',
-    etapa: 'sprint_2_pesquisa_estrategia',
+    etapa: 'sprint_3_redacao_adaptacao_imagens',
   })
 })
 
