@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import routes from './routes'
 
 const app = new Hono()
 
@@ -20,9 +21,11 @@ app.get('/', (c) => {
   return c.json({
     name: 'Social Content Hub',
     description: 'Sistema de criação e gerenciamento de publicações digitais integrado ao OpenCode',
-    status: 'planejamento_concluido',
-    etapa: 'implementacao_sprint_0',
+    status: 'implementacao_em_andamento',
+    etapa: 'sprint_1_memoria_editorial',
   })
 })
+
+app.route('/api', routes)
 
 export default app
