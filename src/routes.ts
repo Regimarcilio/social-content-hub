@@ -8,6 +8,8 @@ import costsRoutes from './costs/routes'
 import platformsRoutes from './platforms/routes'
 import previewRoutes from './preview/completo'
 import demoRoutes from './preview/demo'
+import criarEPReviewRoutes from './preview/criar-e-preview'
+import gerarImagemRealRoutes from './preview/gerar-imagem-real'
 
 const app = new Hono()
 
@@ -20,5 +22,7 @@ app.route('/costs', costsRoutes)
 app.route('/platforms', platformsRoutes)
 app.route('/preview', previewRoutes)
 app.route('/preview', demoRoutes)
+app.route('/preview', criarEPReviewRoutes)
+app.route('/preview', gerarImagemRealRoutes)
 
 export default app
