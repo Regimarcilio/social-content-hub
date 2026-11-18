@@ -520,3 +520,44 @@
 ---
 
 *Fim da entrada 13. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+
+---
+
+## Entrada 14 — Auto-iniciar Servidor e Criação de Imagem Real
+
+**task_id:** PREVIEW-006  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Auto-iniciar servidor e criação de imagem real
+
+### Decisões tomadas
+- Criada rota POST /api/preview/criar-e-preview que cria uma publicação completa (conteúdo, adaptação, briefing, imagem em 2 etapas, qualidade, SEO, estado) e retorna a URL de preview para abrir automaticamente
+- Criada rota POST /api/preview/abrir-servidor-preview que abre o navegador automaticamente na URL de preview
+- Criada rota POST /api/preview/gerar-imagem-real/:briefingId que gera imagem via ComfyUI local (FLUX.1 [schnell] / FLUX.2 [klein] 4B) com fallback para placeholder SVG quando ComfyUI não está disponível
+- O servidor de preview carrega rotas de forma segura (try/catch) sem dependência obrigatória do banco de dados
+- Imagem gerada em duas etapas: conceito (avaliação) → definitiva, conforme especificado no ADR-002
+
+### Arquivos criados/modificados
+- `src/preview/criar-e-preview.ts` — Rotas para criar publicação completa e abrir servidor de preview
+- `src/preview/gerar-imagem-real.ts` — Rota para gerar imagem via ComfyUI com fallback SVG
+- `src/routes.ts` — Adicionadas rotas /preview/criar-e-preview e /preview/gerar-imagem-real
+- `docs/dev-log.md` — Esta entrada
+
+### Fluxo completo
+1. POST /api/preview/criar-e-preview → cria publicação completa + retorna URL de preview
+2. POST /api/preview/abrir-servidor-preview → abre navegador na URL de preview
+3. POST /api/preview/gerar-imagem-real/:briefingId → gera imagem via ComfyUI ou placeholder SVG
+4. GET /api/preview/completo/:materialId/:plataforma → visualiza a prévisualização completa
+
+### Testes
+- Build TypeScript: OK
+- Testes de unidade: 12 passando
+
+### Próximos passos
+- Testar o fluxo completo: criar publicação → gerar imagem → abrir preview automaticamente
+- Integrar com APIs oficiais das plataformas sociais para publicação efetiva
+- Configurar ComfyUI real para geração de imagens premium
+
+---
+
+*Fim da entrada 14. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
