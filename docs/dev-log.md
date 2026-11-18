@@ -202,4 +202,55 @@
 
 ---
 
-*Fim da entrada 5. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+## Entrada 6 — Sprint 5: Memória, Custos e MCP
+
+**task_id:** SPRINT-5-001  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Sprint 5 (memória, custos e MCP)
+
+### Decisões tomadas
+- Memória editorial: versões de materiais, histórico de publicações, séries editoriais com continuidade entre episódios.
+- Controle de custos: registro de custo por publicação/projeto, cálculo de custo médio, latência média, tokens de entrada/saída.
+- Limites de uso: verificação de excedente (requisições por minuto/dia, imagens por dia).
+- Cache semântico: registro e busca de respostas em cache para evitar chamadas desnecessárias a modelos.
+- Integração MCP: configuração de servidores MCP (Filesystem, Fetch, Git, Search) com tipos referência/próprio/fornecedor.
+- Publicação em plataformas sociais: configuração de LinkedIn, Reddit, Facebook, Instagram, YouTube, TikTok, X com autenticação (OAuth2/chave API/token), credenciais criptografadas, limite de caracteres, proporções de imagem, permissão de publicação automática.
+- Acesso aos sites de publicação: função `publicarEmPlataforma()` simula chamada à API oficial de cada plataforma; em produção integrar com APIs oficiais (LinkedIn API, Reddit API, Instagram Graph API, etc.) ou MCP próprio.
+- Credenciais de plataformas armazenadas criptografadamente (LGPD).
+
+### Arquivos criados/modificados
+- `src/memory/schema.ts` — Tabelas: `versoesMaterial`, `historicoPublicacoes`, `seriesEditoriais`.
+- `src/memory/validation.ts` — Schemas Zod: criar versão, registrar publicação.
+- `src/memory/agent.ts` — Agente de memória: `criarVersao()`, `listarVersoes()`, `registrarPublicacaoHistorico()`, `listarHistoricoPublicacoes()`, `criarOuAtualizarSerieEditorial()`, `obterContinuidadeSerie()`.
+- `src/memory/routes.ts` — Rotas Hono: versões, histórico, séries.
+- `src/memory/index.ts` — Re-export de schemas.
+- `src/costs/schema.ts` — Tabelas: `custosPublicacao`, `limitesUso`, `cacheSemantico`.
+- `src/costs/validation.ts` — Schemas Zod: registrar custo, atualizar limite.
+- `src/costs/agent.ts` — Agente de custos: `registrarCusto()`, `calcularCustoPorProjeto()`, `calcularCustoPorPublicacao()`, `atualizarLimiteUso()`, `verificarLimite()`, `registrarCacheSemantico()`, `buscarCacheSemantico()`.
+- `src/costs/routes.ts` — Rotas Hono: custos, limites, cache semântico.
+- `src/costs/index.ts` — Re-export de schemas.
+- `src/platforms/schema.ts` — Tabelas: `mcpIntegracao`, `publicacaoPlataforma`.
+- `src/platforms/validation.ts` — Schemas Zod: configurar MCP, configurar plataforma.
+- `src/platforms/agent.ts` — Agente de plataformas: `configurarMCP()`, `listarMCPs()`, `configurarPlataformaPublicacao()`, `listarPlataformasPublicacao()`, `publicarEmPlataforma()`.
+- `src/platforms/routes.ts` — Rotas Hono: MCP, plataformas, publicação.
+- `src/platforms/index.ts` — Re-export de schemas.
+- `src/routes.ts` — Agregador de rotas (`/api` → editorial + research + images + quality + memory + costs + platforms).
+- `src/shared/db.ts` — Inclui schemas de memory, costs e platforms no Drizzle.
+- `src/index.ts` — Atualização de etapa para `sprint_5_memoria_custos_mcp`.
+- `src/routes-sprint5.ts` — Agregador alternativo de rotas.
+
+### Testes
+- Nenhum teste de código executado (dependências não instaladas offline).
+- Build TypeScript não executado (sem `node_modules`).
+
+### Próximos passos
+- Instalar dependências (`npm install`) quando houver rede.
+- Executar `npm run build` para verificar compilação TypeScript.
+- Criar migrations Drizzle (`drizzle-kit generate`) e aplicar no banco.
+- Implementar testes automatizados (Vitest) para rotas e agentes.
+- Configurar CI mínima (lint, type-check, testes, SAST).
+
+---
+
+*Fim da entrada 6. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
