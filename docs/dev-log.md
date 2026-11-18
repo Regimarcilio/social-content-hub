@@ -162,4 +162,44 @@
 
 ---
 
-*Fim da entrada 4. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+## Entrada 5 — Sprint 4: Qualidade, SEO e Publicação
+
+**task_id:** SPRINT-4-001  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Sprint 4 (qualidade, SEO e publicação)
+
+### Decisões tomadas
+- Agente Quality Reviewer: usa modelo Nemotron 3 Ultra (raciocínio, contexto 1M) via OpenRouter. Avalia 9 critérios objetivos (originalidade, coerência, clareza, gramática, fundamentação, adequação à plataforma, identidade editorial, qualidade visual, legibilidade).
+- Agente SEO Specialist: usa modelo Gemma 4 31B (redação PT-BR, multilíngue) via OpenRouter. Otimiza títulos, palavras-chave e descrições por plataforma.
+- Aprovação humana obrigatória: não é possível avançar para 'aprovado' ou 'publicado' sem todos os critérios de qualidade atendidos (todosCritériosAprovados).
+- Estados de publicação: rascunho → aprovado → publicado, com registro de quem aprovou e quando.
+- Exportação para publicação manual em formatos JSON, Markdown e texto.
+- Validação Zod inline nas rotas (sem middleware externo não disponível offline).
+
+### Arquivos criados/modificados
+- `src/agents/quality-reviewer.ts` — Agente Quality Reviewer: `revisarQualidade()`, `todosCritériosAprovados()`.
+- `src/agents/seo-specialist.ts` — Agente SEO Specialist: `definirSeo()`, `obterSeo()`.
+- `src/quality/schema.ts` — Tabelas: `revisoesQualidade`, `seoMetadados`, `exportacoesPublicacao`, `estadosPublicacao`.
+- `src/quality/validation.ts` — Schemas Zod: revisar qualidade, definir SEO, aprovar publicação, exportar.
+- `src/quality/routes.ts` — Rotas Hono: revisão de qualidade, SEO, aprovação, exportação, estados.
+- `src/quality/index.ts` — Re-export de schemas.
+- `src/routes.ts` — Agregador de rotas (`/api` → editorial + research + images + quality).
+- `src/shared/db.ts` — Inclui schemas de quality no Drizzle.
+- `src/index.ts` — Atualização de etapa para `sprint_4_qualidade_seo_publicacao`.
+- `src/routes-quality.ts` — Agregador alternativo de rotas.
+
+### Testes
+- Nenhum teste de código executado (dependências não instaladas offline).
+- Build TypeScript não executado (sem `node_modules`).
+
+### Próximos passos
+- Instalar dependências (`npm install`) quando houver rede.
+- Executar `npm run build` para verificar compilação TypeScript.
+- Criar migrations Drizzle (`drizzle-kit generate`) e aplicar no banco.
+- Implementar US-015 (histórico/versões) e US-016 (indicadores de custo) na Sprint 5.
+- Implementar US-017 (limites de uso/cache semântico) na Sprint 5.
+
+---
+
+*Fim da entrada 5. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
