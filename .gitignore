@@ -1,12 +1,18 @@
-# Dependencies
 node_modules/
 .env
 .env.local
+.env.production
 *.log
-# IDE
+npm-debug.log*
+dist/
+build/
 .idea/
 .vscode/
 *.swp
-# OS
+*.swo
 .DS_Store
 Thumbs.db
+coverage/
+.vercel
+.next/
+.turbo/
