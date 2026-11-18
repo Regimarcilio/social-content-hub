@@ -411,3 +411,38 @@
 ---
 
 *Fim da entrada 10. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+
+---
+
+## Entrada 11 — Verificação de Porta no Servidor Localhost
+
+**task_id:** PREVIEW-003  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Correção — Verificação de porta disponível antes de iniciar servidor localhost
+
+### Decisões tomadas
+- O servidor de prévisualização agora verifica se a porta 3001 está disponível antes de iniciar
+- Se 3001 estiver em uso, tenta automaticamente 3002, 3003, ... até 3009
+- Se nenhuma porta estiver disponível, exibe erro e encerra
+- O script scripts/abrir-preview.sh foi atualizado para informar o usuário sobre o comportamento
+- Instalada dependência @hono/node-server para o servidor HTTP
+
+### Arquivos criados/modificados
+- `src/preview/servidor-local.ts` — Adicionada função portaDisponivel() e encontrarPortaDisponivel() com varredura de 3001 a 3009
+- `scripts/abrir-preview.sh` — Atualizado com mensagem informativa sobre verificação de porta
+- `package.json` — Adicionada dependência @hono/node-server
+- `docs/dev-log.md` — Esta entrada
+
+### Testes
+- Build TypeScript: OK
+- Testes de unidade: 12 passando
+- Verificação manual: portas 3001, 3002, 3003 estavam em uso; servidor usaria 3004 automaticamente
+
+### Próximos passos
+- Testar o servidor local com dados reais de um material cadastrado
+- Verificar abertura automática do navegador na porta correta
+
+---
+
+*Fim da entrada 11. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
