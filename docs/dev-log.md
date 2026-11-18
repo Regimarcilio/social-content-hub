@@ -326,3 +326,43 @@
 ---
 
 *Fim da entrada 8. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
+
+---
+
+## Entrada 9 — Tela de Prévisualização de Publicação
+
+**task_id:** PREVIEW-001  
+**Data:** 17/11/2026  
+**Responsável:** PLANMASTER (implementação)  
+**Tipo:** Implementação — Tela de prévisualização antes de publicar na rede social
+
+### Decisões tomadas
+- Criada rota GET /api/preview/:materialId/:plataforma que serve uma tela HTML/Tailwind de prévisualização
+- A tela mostra como o conteúdo ficará na plataforma selecionada (formatação, tamanho, imagem, hashtags, contador de caracteres)
+- Permite edição inline do título, conteúdo, hashtags e imagem antes de aprovar
+- Contador de caracteres em tempo real com limite por plataforma (LinkedIn 3000, X 280, Instagram 2200, etc.)
+- Modal de confirmação antes de aprovar (chama POST /api/quality/aprovar)
+- Botão de exportação para publicação manual (chama POST /api/quality/exportar)
+- Botão de rejeição que retorna para revisão
+- Integração com o fluxo de aprovação humana (estados Rascunho/Aprovado/Publicado)
+
+### Arquivos criados/modificados
+- `src/preview/routes.ts` — Rota Hono de prévisualização com template HTML embutido
+- `src/preview/template.html` — Template de referência da tela de preview
+- `src/routes.ts` — Adicionada rota /preview ao agregador
+- `src/index.ts` — Etapa atualizada para 'preview_publicacao'
+- `docs/dev-log.md` — Esta entrada
+
+### Testes
+- Build TypeScript: OK
+- Testes de unidade: 12 passando (não alterados)
+- Teste manual da tela de preview: acessar GET /api/preview/:materialId/:plataforma
+
+### Próximos passos
+- Testar a tela de preview com dados reais de um material cadastrado
+- Integrar com APIs oficiais das plataformas sociais para publicação efetiva
+- Gerar migrations Drizzle e aplicar no banco PostgreSQL
+
+---
+
+*Fim da entrada 9. Novos despachos serão adicionados abaixo, em ordem cronológica, nunca sobrescrevendo entradas anteriores.*
